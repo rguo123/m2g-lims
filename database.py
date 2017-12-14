@@ -35,6 +35,17 @@ def init_database():
     except:
         raise "MongoDB not running."
 
+def build_database():
+    scrape = m2g_scrape('https://m2g.io')
+    data = m2g_data_scrape(scrape)
+    lims = init_database()
+    for datatype in data.keys():
+        for dataset in datatype.keys():
+            build_dataset(lims, dataset)
+            for derivative in dataset.keys():
+                links = data[datatype][dataset][derivative]
+                build_derivative(lims, dataset, datatype, derivative, links)
+
 
 def build_dataset(lims, dataset):
     lims.update_one(
@@ -48,7 +59,6 @@ def update_dataset(lims, dataset, subject):
         filter = {_id: dataset},
         update = {"$addToSet": { "subjects": subject }}
     )
-
 
 '''
     lims: MongoDB collection
@@ -80,6 +90,8 @@ def build_derivative(lims, dataset, datatype, derivative, links):
             }
         )
 
-
 def get_subject(link_header):
     return link_header.split("_")[0]
+
+if __name__ == "__main__":
+    build_database()
