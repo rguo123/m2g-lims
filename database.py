@@ -86,8 +86,8 @@ def build_derivative(lims, dataset, datatype, derivative, links):
             upsert = True
         )
 
-        if (write_result.modified_count == 1):
-            print("Added Scan #" + str(scan_count))
+        if (write_result.upserted_id is not None):
+            print("Upsert and added Scan #" + str(scan_count))
             continue
 
         lims.update_one(
