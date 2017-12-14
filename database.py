@@ -36,27 +36,27 @@ def init_database():
         raise "MongoDB not running."
 
 def build_database():
-    scrape = m2g_scrape('https://m2g.io')
-    data = m2g_data_scrape(scrape)
+    scrape = scraper.m2g_scrape('https://m2g.io')
+    data = scraper.m2g_data_scrape(scrape)
     lims = init_database()
     for datatype in data.keys():
-        for dataset in datatype.keys():
+        for dataset in data[datatype].keys():
             build_dataset(lims, dataset)
-            for derivative in dataset.keys():
+            for derivative in data[dataset][datatype].keys():
                 links = data[datatype][dataset][derivative]
                 build_derivative(lims, dataset, datatype, derivative, links)
 
 
 def build_dataset(lims, dataset):
     lims.update_one(
-        filter = {_id: dataset},
+        filter = {"_id": dataset},
         update = {"$setOnInsert": { "subjects": [] }},
         upsert = True
     )
 
 def update_dataset(lims, dataset, subject):
     lims.update_one(
-        filter = {_id: dataset},
+        filter = {"_id": dataset},
         update = {"$addToSet": { "subjects": subject }}
     )
 
@@ -77,14 +77,14 @@ def build_derivative(lims, dataset, datatype, derivative, links):
         # insert  and subject dataype if needed
 
         lims.update_one(
-            filter = {_id: subject, datatype + "." + derivative: {"$exists": False}},
+            filter = {"_id": subject, datatype + "." + derivative: {"$exists": False}},
             update = { "$set": { datatype + "." + derivative: [] }},
             upsert = True
         )
         #insert url to derivative list
         #NOTE: no upsert option exists
         lims.update_one(
-            filter = {_id: subject}, #query
+            filter = {"_id": subject}, #query
             update = {
                 "$push": { datatype + "." + derivative: {url: ""} }
             }
