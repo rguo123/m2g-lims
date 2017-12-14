@@ -36,8 +36,18 @@ def init_database():
         raise "MongoDB not running."
 
 
-def build_dataset(db):
-    pass
+def build_dataset(lims, dataset):
+    lims.update_one(
+        filter = {_id: dataset},
+        update = {"$setOnInsert": { "subjects": [] }},
+        upsert = True
+    )
+
+def update_dataset(lims, dataset, subject):
+    lims.update_one(
+        filter = {_id: dataset},
+        update = {"$addToSet": { "subjects": subject }}
+    )
 
 
 '''
@@ -53,11 +63,12 @@ def build_derivative(lims, dataset, datatype, derivative, links):
         url = link_list[1]
 
         subject = get_subject(link_header)
+        update_dataset(lims, dataset, subject)
+        # insert  and subject dataype if needed
 
-        # insert if needed
         lims.update_one(
-            filter = {_id: subject}, #query
-            update = { "$setOnInsert": { datatype: { derivative: {} } } },
+            filter = {_id: subject, datatype + "." + derivative: {"$exists": False}},
+            update = { "$set": { datatype + "." + derivative: [] }},
             upsert = True
         )
         #insert url to derivative list
@@ -68,14 +79,6 @@ def build_derivative(lims, dataset, datatype, derivative, links):
                 "$push": { datatype + "." + derivative: {url: ""} }
             }
         )
-
-def upsert_dataset(lims, dataset, subject):
-    # add subject to proper dataset
-    lims.update_one(
-        filter = {_id: dataset},
-        update = { "addToSet": {}}
-    )
-
 
 
 def get_subject(link_header):
