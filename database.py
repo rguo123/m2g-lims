@@ -1,5 +1,6 @@
 import scraper
 from pymongo import MongoClient
+import pickle
 
 '''
 SCHEMA:
@@ -22,6 +23,7 @@ Subject:
 }
 
 '''
+scan_count = 0
 
 ### init MongoDB ###
 def init_database():
@@ -36,13 +38,14 @@ def init_database():
         raise "MongoDB not running."
 
 def build_database():
-    scrape = scraper.m2g_scrape('https://m2g.io')
-    data = scraper.m2g_data_scrape(scrape)
+    #scrape = scraper.m2g_scrape('https://m2g.io')
+    #data = scraper.m2g_data_scrape(scrape)
+    data = pickle.load(open("scrape.pickle", "rb"))
     lims = init_database()
     for datatype in data.keys():
         for dataset in data[datatype].keys():
             build_dataset(lims, dataset)
-            for derivative in data[dataset][datatype].keys():
+            for derivative in data[datatype][dataset].keys():
                 links = data[datatype][dataset][derivative]
                 build_derivative(lims, dataset, datatype, derivative, links)
 
@@ -67,19 +70,29 @@ def update_dataset(lims, dataset, subject):
     links: list of lists formatted as [[link_header, link], [link_header, link], ...]
 '''
 def build_derivative(lims, dataset, datatype, derivative, links):
+    global scan_count
     for link_list in links:
-
+        scan_count += 1
         link_header = link_list[0]
-        url = link_list[1]
+        url = encode_url(link_list[1])
 
         subject = get_subject(link_header)
         update_dataset(lims, dataset, subject)
         # insert  and subject dataype if needed
 
+        write_result = lims.update_one(
+            filter = {"_id": subject},
+            update = {"$setOnInsert": { datatype + "." + derivative: [{url: ""}]}},
+            upsert = True
+        )
+
+        if (write_result.modified_count == 1):
+            print("Added Scan #" + str(scan_count))
+            continue
+
         lims.update_one(
             filter = {"_id": subject, datatype + "." + derivative: {"$exists": False}},
             update = { "$set": { datatype + "." + derivative: [] }},
-            upsert = True
         )
         #insert url to derivative list
         #NOTE: no upsert option exists
@@ -89,9 +102,17 @@ def build_derivative(lims, dataset, datatype, derivative, links):
                 "$push": { datatype + "." + derivative: {url: ""} }
             }
         )
+        print("Added Scan #" + str(scan_count))
+
 
 def get_subject(link_header):
     return link_header.split("_")[0]
+
+def encode_url(url):
+    return url.replace(".", "$$$")
+
+def decode_url(encoded_url):
+    return encoded_url.replace("$$$", ".")
 
 if __name__ == "__main__":
     build_database()
