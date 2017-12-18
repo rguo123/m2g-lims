@@ -30,7 +30,7 @@ def init_database():
     try:
         client = MongoClient("mongodb://localhost:27017/")
         # specify database
-        db = client.database
+        db = client.m2gdatabase
         # specify collection
         lims = db.lims
         return lims
@@ -40,12 +40,16 @@ def init_database():
 def build_database():
     #scrape = scraper.m2g_scrape('https://m2g.io')
     #data = scraper.m2g_data_scrape(scrape)
-    data = pickle.load(open("scrape.pickle", "rb"))
+    data = pickle.load(open("data.pickle", "rb"))
     lims = init_database()
     for datatype in data.keys():
         for dataset in data[datatype].keys():
             build_dataset(lims, dataset)
             for derivative in data[datatype][dataset].keys():
+                ## ignore graph QA plots since not subject based
+                ## TODO: think of fix for this
+                if (derivative == "QA.graphs"):
+                    continue
                 links = data[datatype][dataset][derivative]
                 build_derivative(lims, dataset, datatype, derivative, links)
 
@@ -70,10 +74,15 @@ def update_dataset(lims, dataset, subject):
     links: list of lists formatted as [[link_header, link], [link_header, link], ...]
 '''
 def build_derivative(lims, dataset, datatype, derivative, links):
+
     global scan_count
     for link_list in links:
         scan_count += 1
         link_header = link_list[0]
+        ## invalid parse
+        ## TODO: get better fix
+        if (link_header.find("sub") < 0 or link_header.find("_") < 0):
+            continue
         url = encode_url(link_list[1])
 
         subject = get_subject(link_header)
