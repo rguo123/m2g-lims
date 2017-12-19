@@ -2,36 +2,69 @@
 {% block body %}
 
 <div id="table">
-<h2>Subject: {{subject_id}}</h2>
+<h1>Subject: {{subject_id}}</h1>
 <!-- Table starts here -->
-{% for derivative in subject %}
-
-  {% for key, value in derivatives.items() %}
-    <h3>{{key}}</h3>
-    {% if value is mapping}
-
-
+{% for datatype, derivatives in subject.items() %}
+  <h1>Datatype: {{datatype}}</h1>
+  {% for derivative, values in derivatives.items() %}
+    <p class = "derivative">{{derivative}}</p>
+    {% if values is mapping %}
+      {% for sub, link_list in values.items() %}
+        <p class = "sub">{{sub}}</p>
+        <div class="table-responsive-vertical shadow-z-1">
+        <!-- Table starts here -->
+        <table id="table" class="table table-hover table-mc-light-blue">
+            <thead>
+              <tr>
+                <th>Link</th>
+                <th>Visualization</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for link_dict in link_list %}
+                {% for link, vis_link in link_dict.items() %}
+                   <tr>
+                     {% set decode = "https:" + (link.replace('$$$', '.')).split(':')[-1] %}
+                     {% set link_short = decode.split('/')[-1] %}
+                     <td data-title = "Link"><a href = {{decode}}>{{link_short}}</a></td>
+                     <td data-title = "Visualization">{{vis_link}}</td>
+                   </tr>
+                {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="table-responsive-vertical shadow-z-1">
+      <!-- Table starts here -->
+      <table id="table" class="table table-hover table-mc-light-blue">
+          <thead>
+            <tr>
+              <th>Link</th>
+              <th>Visualization</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for link_dict in values %}
+              {% for link, vis_link in link_dict.items() %}
+                 <tr>
+                   {% set decode = "https:" + (link.replace('$$$', '.')).split(':')[-1] %}
+                   {% set link_short = decode.split('/')[-1] %}
+                   <td data-title = "Link"><a href = {{decode}}>{{link_short}}</a></td>
+                   <td data-title = "Visualization">{{vis_link}}</td>
+                 </tr>
+              {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
   {% endfor %}
 
 {% endfor %}
 
-<div class="table-responsive-vertical shadow-z-1">
+</div>
 
-<table id="table" class="table table-hover table-mc-light-blue">
-    <thead>
-      <tr>
-        <th>Subject ID</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for subject in subjects %}
-        <tr>
-          <td data-title = "Subject"><a href = "#" class = "lims_id_link">{{subject}}</a></td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-</div>
 
 {% endblock %}

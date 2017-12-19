@@ -46,7 +46,7 @@ def subject():
     subject = lims.find_one({"_id": subject_id})
     # get rid of ID so easier to process derivatives
     subject.pop("_id")
-    return render_template("dataset_table.html", subject_id = subject_id, subject = subject)
+    return render_template("subject_table.html", subject_id = subject_id, subject = subject)
 
 
 def decode_url(encoded_url):
