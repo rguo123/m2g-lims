@@ -69,13 +69,14 @@ $(document).ready(function() {
 //             target -> the type of the thing you are finding (e.g subject)
 // TODO: learn javascript so I know how to actually do this shit
 // TODO: better yet, get someone who knows how to do this stuff
-function request_lims_id(request_id, target) {
+function request_lims_id(request_id) {
+  var link = "http://localhost:5000/lims_id_request"
   $.ajax({
-    url: "http://localhost:5000/" + target.toLowerCase() + "_request",
-    data: { "id": request_id},
-    success: function(result) {
-      if (result) {
-        $("#demo").html(result);
+    url: link,
+    headers: { "id": request_id},
+    success: function(data) {
+      if (data) {
+        window.location.href = data;
       }
       else {
         alert("Error processing request. Get help");
@@ -88,6 +89,5 @@ function request_lims_id(request_id, target) {
 // Make sure to name everything correctly
 $(".lims_id_link").click(function(){
   var request_id = $(this).text();
-  var target = $(this).parent().attr("data-title");
-  request_lims_id(request_id, target);
+  request_lims_id(request_id);
 });

@@ -25,11 +25,25 @@ def index():
         datasets.append({doc["_id"]: len(doc["subjects"])})
     return render_template("index.html", datasets = datasets)
 
-@app.route("/dataset_request")
+@app.route("/lims_id_request")
 def dataset_request():
     request_id = request.headers.get("id")
-    dataset = lims.find_one({"_id": request_id})
-    return render_template("table.html")
+    if (request_id.find("sub-") != -1):
+        return url_for("subject", subject_id = request_id)
+    else:
+        return url_for("dataset", dataset_id = request_id)
+
+@app.route("/dataset")
+def dataset():
+    dataset_id = request.args.get("dataset_id")
+    dataset = lims.find_one({"_id": dataset_id})
+    subjects = dataset["subjects"]
+    return render_template("dataset_table.html", dataset_id = dataset_id, subjects = subjects)
+
+@app.route("/subject")
+def subject():
+    subject_id = requeset.args.get("subject_id")
+    subject = lims.find_one({"_id": subject_id})
 
 
 

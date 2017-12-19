@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div id="table">
+<h2>Dataset: {{dataset_id}}</h2>
+<div class="table-responsive-vertical shadow-z-1">
+<!-- Table starts here -->
+<table id="table" class="table table-hover table-mc-light-blue">
+    <thead>
+      <tr>
+        <th>Subject ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subject in subjects %}
+        <tr>
+          <td data-title = "Subject"><a href = "#" class = "lims_id_link">{{subject}}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+{% endblock %}
