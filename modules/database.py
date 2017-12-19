@@ -58,6 +58,7 @@ def build_database():
                     continue
                 links = data[datatype][dataset][derivative]
                 build_derivative(lims, dataset, datatype, derivative, links)
+    #build_metadata()
 
 
 def build_dataset(lims, dataset):
@@ -121,9 +122,24 @@ def build_derivative(lims, dataset, datatype, derivative, links):
 
 
 def build_metadata():
-    links = get_csv_links(SOURCE_URL)
-    filenames = download_csvs(links, DATA_PATH)
-    metadata_list = parse_csv(filenames)
+    ## Get metadata CSV
+    try:
+        links = get_csv_links(SOURCE_URL)
+        filenames = download_csvs(links, DATA_PATH)
+        metadata_list = parse_csv(filenames)
+    except:
+        raise "Could not access/download CSVs"
+
+    for metadata in metadata_list:
+        subid = metadata.pop("SUBID")
+        for key, value in metadata.items():
+            try:
+                lims.update_one(
+                    filter = {"_id": "sub-" + subid},
+                    update = {"$set": {"metadata." + key: value}}
+                )
+            except:
+                raise "Error adding metadata"
 
 
 def get_subject(link_header):
