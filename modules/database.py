@@ -1,6 +1,7 @@
 import scraper
 from pymongo import MongoClient
 import pickle
+import csv_scraper
 
 '''
 SCHEMA:
@@ -23,7 +24,12 @@ Subject:
 }
 
 '''
+## tracker
 scan_count = 0
+
+### DATA_DIRECTORY
+SOURCE_URL = "http://m2g.io"
+DATA_PATH = "../data/csv/"
 
 ### init MongoDB ###
 def init_database():
@@ -112,6 +118,12 @@ def build_derivative(lims, dataset, datatype, derivative, links):
             }
         )
         print("Added Scan #" + str(scan_count))
+
+
+def build_metadata():
+    links = get_csv_links(SOURCE_URL)
+    filenames = download_csvs(links, DATA_PATH)
+    metadata_list = parse_csv(filenames)
 
 
 def get_subject(link_header):

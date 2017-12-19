@@ -4,8 +4,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 
-SOURCE_URL = "http://m2g.io"
-
 def get_csv_links(source):
     browser = webdriver.Chrome()
     browser.get(source)
@@ -22,10 +20,32 @@ def get_csv_links(source):
 
 ## data_path shoudl have '/' at end
 def download_csvs(csv_links, data_path):
+    filenames = []
     for link in csv_links:
         filename = data_path + link.split('/')[-1]
+        filenames.append(filename)
         urllib.request.urlretrieve(link, filename)
+    return filenames
+
+'''
+    Returns list of dictionaries where each dictionary contains subject metadata
+'''
+def parse_csv(filename):
+    metadata_list = []
+    with open(filename, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        keys = next(reader)
+        # remaining lines are subject metadata
+        for row in reader:
+            metadata = {}
+            for i in range(len(row)):
+                ## get corresponding key
+                if row[i] == "#":
+                    break
+                metadata[keys[i]] = row[i]
+            metadata_list.append(metadata)
+    print(metadata_list)
+    return metadata_list
 
 if __name__ == "__main__":
-    csv_links = get_csv_links(SOURCE_URL)
-    download_csvs(csv_links, "../data/csv/")
+    parse_csv("../data/csv/BNU1.csv")
