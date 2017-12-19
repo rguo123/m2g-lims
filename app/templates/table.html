@@ -1,0 +1,34 @@
+<!-- Responsive table starts here -->
+<!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
+<div class="table-responsive-vertical shadow-z-1">
+<!-- Table starts here -->
+<table id="table" class="table table-hover table-mc-light-blue">
+    <thead>
+      <tr>
+        <th>Test</th>
+        <th># Subjects</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for dataset in datasets %}
+        {% for key, value in dataset.items() %}
+        <tr>
+          <td data-title = "Dataset"><a href = "#" class = "lims_id_link">{{key}}</a></td>
+          <td data-title = "# Subjects">{{value}}</td>
+          <td data-title = "Status"><font color="#02dd0d">Good</font></td>
+        </tr>
+        {% endfor %}
+      {% endfor %}
+      <!--
+      <tr>
+        <td data-title="ID">10</td>
+        <td data-title="Name">Material Design Animation Timing (old one)</td>
+        <td data-title="Link">
+          <a href="https://codepen.io/zavoloklom/pen/Jbrho" target="_blank">Codepen</a>
+        </td>
+        <td data-title="Status">Completed</td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>
