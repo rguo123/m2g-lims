@@ -4,3 +4,5 @@ DB/
 venv/
 *.pyc
 *.pickle
+*.csv
+tmp
