@@ -1,0 +1,7 @@
+This data directory is for storing the necessary files needed to build the LIMS. Feel free to customize this to your liking but you will also need to change the code in our database.py.
+
+Current directory structure:
+
+Data/
+	csv/ (for storing csv metadata files)
+	db/ (path where mongodb will store files, you need to make this yourself)
