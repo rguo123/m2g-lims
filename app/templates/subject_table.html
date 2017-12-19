@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div id="table">
+<h2>Subject: {{subject_id}}</h2>
+<!-- Table starts here -->
+{% for derivative in subject %}
+
+  {% for key, value in derivatives.items() %}
+    <h3>{{key}}</h3>
+    {% if value is mapping}
+
+
+  {% endfor %}
+
+{% endfor %}
+
+<div class="table-responsive-vertical shadow-z-1">
+
+<table id="table" class="table table-hover table-mc-light-blue">
+    <thead>
+      <tr>
+        <th>Subject ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subject in subjects %}
+        <tr>
+          <td data-title = "Subject"><a href = "#" class = "lims_id_link">{{subject}}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+{% endblock %}

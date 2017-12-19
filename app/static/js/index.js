@@ -70,9 +70,8 @@ $(document).ready(function() {
 // TODO: learn javascript so I know how to actually do this shit
 // TODO: better yet, get someone who knows how to do this stuff
 function request_lims_id(request_id) {
-  var link = "http://localhost:5000/lims_id_request"
   $.ajax({
-    url: link,
+    url: "http://localhost:5000/lims_id_request",
     headers: { "id": request_id},
     success: function(data) {
       if (data) {

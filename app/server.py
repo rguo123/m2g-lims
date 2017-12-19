@@ -14,7 +14,7 @@ except:
 
 '''
     This route just displays all the datasets in the LIMS and
-    their respective subject counts. Eveentually can also return other
+    their respective subject counts. Eventually can also return other
     useful calculated metadata.
 '''
 @app.route("/")
@@ -42,10 +42,15 @@ def dataset():
 
 @app.route("/subject")
 def subject():
-    subject_id = requeset.args.get("subject_id")
+    subject_id = request.args.get("subject_id")
     subject = lims.find_one({"_id": subject_id})
+    # get rid of ID so easier to process derivatives
+    subject.pop("_id")
+    return render_template("dataset_table.html", subject_id = subject_id, subject = subject)
 
 
+def decode_url(encoded_url):
+    return encoded_url.replace("$$$", ".")
 
 
 
