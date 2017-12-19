@@ -40,7 +40,7 @@ def init_database():
 def build_database():
     #scrape = scraper.m2g_scrape('https://m2g.io')
     #data = scraper.m2g_data_scrape(scrape)
-    data = pickle.load(open("data.pickle", "rb"))
+    data = pickle.load(open("../data/tmp/data.pickle", "rb"))
     lims = init_database()
     for datatype in data.keys():
         for dataset in data[datatype].keys():
