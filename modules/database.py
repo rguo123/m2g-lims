@@ -1,7 +1,7 @@
 import scraper
 from pymongo import MongoClient
 import pickle
-import csv_scraper
+import csv_scraper as csvs
 
 '''
 SCHEMA:
@@ -41,13 +41,15 @@ def init_database():
         lims = db.lims
         return lims
     except:
-        raise "MongoDB not running."
+        raise Exception("MongoDB not running.")
 
 def build_database():
     #scrape = scraper.m2g_scrape('https://m2g.io')
     #data = scraper.m2g_data_scrape(scrape)
+
     data = pickle.load(open("../data/tmp/data.pickle", "rb"))
     lims = init_database()
+
     for datatype in data.keys():
         for dataset in data[datatype].keys():
             build_dataset(lims, dataset)
@@ -58,7 +60,8 @@ def build_database():
                     continue
                 links = data[datatype][dataset][derivative]
                 build_derivative(lims, dataset, datatype, derivative, links)
-    #build_metadata()
+
+    build_metadata(lims)
 
 
 def build_dataset(lims, dataset):
@@ -121,25 +124,51 @@ def build_derivative(lims, dataset, datatype, derivative, links):
         print("Added Scan #" + str(scan_count))
 
 
-def build_metadata():
+def build_metadata(lims):
     ## Get metadata CSV
     try:
-        links = get_csv_links(SOURCE_URL)
-        filenames = download_csvs(links, DATA_PATH)
-        metadata_list = parse_csv(filenames)
+        links = csvs.get_csv_links(SOURCE_URL)
+        filenames = csvs.download_csvs(links, DATA_PATH)
+        for filename in filenames:
+            metadata_list = csvs.parse_csv(filenames)
     except:
-        raise "Could not access/download CSVs"
+        raise Exception("Could not access/download CSVs")
 
     for metadata in metadata_list:
-        subid = metadata.pop("SUBID")
+
+        # Try to get subject ID, no other way besides brute force right now
+        subid = metadata.pop("SUBID", -1)
+        if (subid == -1):
+            subid = metadata.pop("URSI", -1)
+        if (subid == -1):
+            subid = metadata.pop("ursi", -1)
+        if (subid == -1):
+            subid = metadata.pop("SubjectID", -1)
+        if (subid == -1):
+            continue
+
+        try:
+            session = metadata.pop("SESSION")
+        except:
+            session = "Session-1"
+
         for key, value in metadata.items():
             try:
-                lims.update_one(
+                result = lims.update_one(
                     filter = {"_id": "sub-" + subid},
-                    update = {"$set": {"metadata." + key: value}}
+                    update = {"$set": {"metadata." + session + "." + key: value}}
                 )
+
+                ##Update did not occur
+                if (result.matched_count < 1):
+                    lims.update_one(
+                        filter = {"_id": "sub-00" + subid},
+                        update = {"$set": {"metadata." + session + "." + key: value}}
+                    )
             except:
-                raise "Error adding metadata"
+                raise Exception("Error adding metadata")
+    
+    print("Added Metadata")
 
 
 def get_subject(link_header):

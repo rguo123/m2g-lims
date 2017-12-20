@@ -3,6 +3,41 @@
 
 <div id="table">
 <h1>Subject: {{subject_id}}</h1>
+
+<!-- Metadata Display -->
+{% set metadataDict = subject.pop("metadata", "-1") %}
+{% if metadataDict != "-1" %}
+<p class = "derivative">Metadata</p>
+{% for session, metadata in metadataDict.items() %}
+  <p class = "sub">{{session}}</p>
+  <div class = "wrap">
+    <div class="table-responsive-vertical shadow-z-1">
+    <!-- Table starts here -->
+    <table id="table" class="table table-hover table-mc-light-blue">
+        <thead>
+          <tr>
+            {% for key in metadata.keys() %}
+            <th>{{key}}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for key, value in metadata.items() %}
+                   <td class = data-title = {{key}}>{{value}}</td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+{% endfor %}
+
+{% endif %}
+
+
 <!-- Table starts here -->
 {% for datatype, derivatives in subject.items() %}
   <h1>Datatype: {{datatype}}</h1>
