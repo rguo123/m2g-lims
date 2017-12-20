@@ -26,7 +26,7 @@ def index():
     return render_template("index.html", datasets = datasets)
 
 @app.route("/lims_id_request")
-def dataset_request():
+def lims_request():
     request_id = request.headers.get("id")
     if (request_id.find("sub-") != -1):
         return url_for("subject", subject_id = request_id)
