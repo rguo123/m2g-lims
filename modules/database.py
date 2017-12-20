@@ -45,8 +45,14 @@ def init_database():
 
 def build_database():
     #scrape = scraper.m2g_scrape('https://m2g.io')
+    #data = m2g_data_scrape({'FMRI':scrape['FMRI']})
+    #data2 = scraper.m2g_data_scrape(scrape)
+    #data = scraper.dive_deeper(data2)
+    #data['FMRI']['NKI1']['Preproc Images'] = data['FMRI']['NKI1'].pop('Preproc. Images')
+    #pickle.dump( data, open( "data.pickle", "wb" ) )
+    #scrape = scraper.m2g_scrape('https://m2g.io')
     #data = scraper.m2g_data_scrape(scrape)
-    data = pickle.load(open("../data/tmp/data.pickle", "rb"))
+    data = pickle.load(open("./data.pickle", "rb"))
     lims = init_database()
     for datatype in data.keys():
         for dataset in data[datatype].keys():
