@@ -115,7 +115,6 @@ def build_derivative(lims, dataset, datatype, derivative, links):
         )
 
         if (write_result.upserted_id is not None):
-            print("Upsert and added Scan #" + str(scan_count))
             continue
 
         lims.update_one(
@@ -130,7 +129,7 @@ def build_derivative(lims, dataset, datatype, derivative, links):
                 "$push": { datatype + "." + derivative: {url: ""} }
             }
         )
-    print("Added Scan Count" + str(scan_count))
+    print("Updated Scan Count: " + str(scan_count))
 
 
 def build_metadata(lims):
