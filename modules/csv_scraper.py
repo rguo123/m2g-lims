@@ -30,22 +30,24 @@ def download_csvs(csv_links, data_path):
 '''
     Returns list of dictionaries where each dictionary contains subject metadata
 '''
-def parse_csv(filename):
+def parse_csv(filenames):
     metadata_list = []
-    with open(filename, 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        keys = next(reader)
-        # remaining lines are subject metadata
-        for row in reader:
-            metadata = {}
-            for i in range(len(row)):
-                ## get corresponding key
-                if row[i] == "#":
-                    break
-                metadata[keys[i]] = row[i]
-            metadata_list.append(metadata)
-    print(metadata_list)
+    for filename in filenames:
+        with open(filename, 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            keys = next(reader)
+            # remaining lines are subject metadata
+            for row in reader:
+                metadata = {}
+                for i in range(len(row)):
+                    ## get corresponding key
+                    if row[i] == "#":
+                        continue
+                    metadata[keys[i]] = row[i]
+                metadata_list.append(metadata)
+
     return metadata_list
+
 
 if __name__ == "__main__":
     parse_csv("../data/csv/BNU1.csv")
