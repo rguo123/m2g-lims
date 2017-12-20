@@ -29,7 +29,7 @@ def m2g_scrape(url): #returns a dictionary
     print("STARTING SESSION")
     browser.get(url) #navigate to the page
     print("OPENED")
-    time.sleep(2) #wait for .25 seconds(kind of jank)
+    time.sleep(1) #wait for .25 seconds(kind of jank)
     innerHTML = browser.execute_script("return document.body.innerHTML") #returns the inner HTML as a string
     print("SCRAPED")
     browser.close()
@@ -82,7 +82,7 @@ def m2g_data_scrape(scrape): #converts links to s3, to list of links to data
                 #print(data[scan][dataset][derivative])
                 if 'http' in data[scan][dataset][derivative]:
                     browser.get(data[scan][dataset][derivative])
-                    time.sleep(2) #wait for .25 seconds(kind of jank)
+                    time.sleep(1) #wait for .25 seconds(kind of jank)
                     innerHTML = browser.execute_script("return document.body.innerHTML")
                     soup = bs(innerHTML, 'lxml')
                     #links = [[link.text,data[scan][dataset][derivative]+link['href']]\
@@ -120,7 +120,7 @@ def dive_deeper(data):
                 for link in data2[scan][dataset][derivative]:
                     if link[1][-1] == '/':
                         browser.get(link[1])
-                        time.sleep(2) #wait for .25 seconds(kind of jank)
+                        time.sleep(1) #wait for .25 seconds(kind of jank)
                         innerHTML = browser.execute_script("return document.body.innerHTML")
                         soup = bs(innerHTML, 'lxml')
                         link[1] = [[link2.text,link2['href']]\
