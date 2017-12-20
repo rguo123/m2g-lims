@@ -1,0 +1,46 @@
+pipeline/
+    dataset/
+        subject-level/
+            scan-level/
+                metadata/
+                anat/
+                    preproc/
+                        # preprocessing derivatives
+                    registered/
+                        # registration derivatives
+                    qa/
+                        # anatomical qa figures, for each of the above
+                        preproc/
+                            # preprocessing qa figures
+                        registered/
+                            # registration qa figures
+                func/
+                    preproc/
+                        # fmri preprocessing  derivatives
+                    registered/
+                        # fmri registration derivatives
+                    cleaned/
+                        # fmri nuisance-corrected derivatives
+                    timeseries/
+                        parcellation/
+                            # fmri timeseries
+                    connectomes/
+                        parcellation/
+                            # fmri connectomes
+                    qa/
+                        # fmri qa, for each from above
+                        ...
+                dwi/
+                    preproc/
+                        # dwi preprocessing  derivatives
+                    registered/
+                        # dwi registration derivatives
+                    tensor/
+                        # dwi tensor model
+                    fibers/
+                    connectomes/
+                        parcellation/
+                            # dwi connectomes
+                    qa/
+                        # dwi qa, for each from above
+                        ...

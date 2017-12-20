@@ -49,10 +49,5 @@ def subject():
     return render_template("subject_table.html", subject_id = subject_id, subject = subject)
 
 
-def decode_url(encoded_url):
-    return encoded_url.replace("$$$", ".")
-
-
-
 if __name__ == "__main__":
     app.run(debug = True, port = 5000)
