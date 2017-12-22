@@ -8,14 +8,14 @@ Have Python3.6 and pip3 package manager installed.
 
 ## Setup
 1. Clone this repository
-2. pip3 install -r requirements.txt
+2. In cloned repository, run 'pip3 install -r requirements.txt' in terminal.
 3. Install MongoDB ([Instructions](https://docs.mongodb.com/manual/installation/))
 4. Download [Chromedriver](https://chromedriver.storage.googleapis.com/index.html?path=2.34/).
 5. Add ChromeDriver to your system PATH. [Tutorial](http://www.kenst.com/2015/03/installing-chromedriver-on-mac-osx/)
 
 ## Database Setup (see [Dataset Registration](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/Dataset_Registration.ipynb))
-3. mkdir data/db/
-4. In new terminal window, run: 'mongod --dbpath data/db/'
+3. Run 'mkdir data/db/' in cloned git repository.
+4. In new terminal window, run: 'mongod --dbpath path/to/git/repo/data/db/'
 5. Go into modules directory and run: 'python3 database.py'
 
 ## API Setup (see [API Documentation](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/API_Documentation.ipynb))
