@@ -8,7 +8,7 @@ Laboratory Information Management System for m2g.io data.
 3. Install MongoDB ([Instructions](https://docs.mongodb.com/manual/installation/))
 ## Database Setup (see [Dataset Registration](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/Dataset_Registration.ipynb))
 3. mkdir data/db/
-4. In new terminal window, run: 'mongod --dbpath path/to/gitrepo/data/db/'
+4. In new terminal window, run: 'mongod --dbpath data/db/'
 5. Go into modules directory and run: 'python3 database.py'
 
 ## API Setup (see [API Documentation](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/API_Documentation.ipynb))
@@ -19,6 +19,6 @@ Laboratory Information Management System for m2g.io data.
 
 ## Documentation:
 [WEB Scraping](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/Web_Scraper.ipynb)  
-[CSV Scraping](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/CSV_Scraper.ipynb) 
+[CSV Scraping](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/CSV_Scraper.ipynb)  
 [Dataset Registration](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/Dataset_Registration.ipynb)  
 [LIMS API / Data Querying](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/API_Documentation.ipynb)  
