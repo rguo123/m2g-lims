@@ -3,7 +3,8 @@ Laboratory Information Management System for m2g.io data.
 
 # Installation:
 ## Prequisites:
-Have Google Chrome or Chromium installed.
+Have Google Chrome or Chromium installed.  
+Have Python3.6 and pip3 package manager installed.
 
 ## Setup
 1. Clone this repository
