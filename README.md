@@ -25,7 +25,7 @@ Have Python3.6 and pip3 package manager installed.
 
 
 ## Documentation:
-[WEB Scraping](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/Web_Scraper.ipynb)  
 [CSV Scraping](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/CSV_Scraper.ipynb)  
 [Dataset Registration](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/Dataset_Registration.ipynb)  
 [LIMS API / Data Querying](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/API_Documentation.ipynb)  
+[WEB Scraping](https://nbviewer.jupyter.org/github/rguo123/m2g-lims/blob/master/docs/Web_Scraper.ipynb)  
